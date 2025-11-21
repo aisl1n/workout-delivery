@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Personal {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  workouts  Workout[]
+  createdAt DateTime  @default(now())
+}
+
+model Exercise {
+  id          String        @id @default(cuid())
+  name        String
+  muscleGroup String // Ex: Peito, Costas, Pernas
+  videoUrl    String? // URL do GIF ou Vídeo (Youtube/S3)
+  items       WorkoutItem[]
+}
+
+model Workout {
+  id         String        @id @default(cuid())
+  title      String // Ex: "Treino A - Hipertrofia"
+  personalId String
+  personal   Personal      @relation(fields: [personalId], references: [id])
+  items      WorkoutItem[]
+  slug       String        @unique // Identificador para o link público
+  createdAt  DateTime      @default(now())
+}
+
+model WorkoutItem {
+  id         String   @id @default(cuid())
+  workoutId  String
+  workout    Workout  @relation(fields: [workoutId], references: [id])
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  sets       String? // Ex: "3x"
+  reps       String? // Ex: "10-12"
+  order      Int // Ordem do exercício no treino
+}
