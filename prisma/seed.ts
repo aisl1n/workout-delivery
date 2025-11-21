@@ -22,7 +22,7 @@ async function main() {
   const sheet = workbook.Sheets[sheetName];
   const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as string[][];
 
-  // Find header row
+  // Find header row (should be row 16)
   const headerRowIndex = data.findIndex(
     (row) =>
       row &&
@@ -42,12 +42,24 @@ async function main() {
 
   console.log(`Found ${exercisesData.length} exercises to seed.`);
 
-  for (const row of exercisesData) {
-    const name = row[0];
-    const videoUrl = row[1];
-    const muscleGroup = row[4] || "General"; // Default if missing
+  for (let i = 0; i < exercisesData.length; i++) {
+    const row = exercisesData[i];
+    const rowIndex = headerRowIndex + 1 + i; // Actual row index in Excel (0-indexed)
 
-    if (!name) continue;
+    const name = row[0]; // Column B - Exercise name (index 0 in array)
+    const muscleGroup = row[5] || "General"; // Column G - Prime Mover Muscle (index 5 in array)
+
+    if (!name || name === "Exercise") continue; // Skip header or empty rows
+
+    // Extract hyperlink from column C (index 2 in Excel, but we need to calculate it)
+    // The array starts from column B, so column C is at Excel column index 2
+    const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: 2 }); // Column C in Excel
+    const cell = sheet[cellAddress];
+    const videoUrl = cell?.l?.Target || null; // Get hyperlink only
+
+    console.log(`Processing: ${name}`);
+    console.log(`  Video URL: ${videoUrl}`);
+    console.log(`  Muscle Group: ${muscleGroup}`);
 
     await prisma.exercise.create({
       data: {
