@@ -19,13 +19,7 @@ import {
   ArrowLeft,
   Loader2,
 } from "lucide-react";
-
-interface Exercise {
-  id: string;
-  name: string;
-  muscleGroup: string;
-  videoUrl: string | null;
-}
+import type { Exercise } from "@/lib/generated/prisma/client";
 
 interface WorkoutItem {
   exercise: Exercise;

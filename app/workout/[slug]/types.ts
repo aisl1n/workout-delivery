@@ -1,24 +1,26 @@
-export interface Exercise {
-  id: string;
-  name: string;
-  muscleGroup: string;
-  videoUrl: string | null;
-}
+import type {
+  Workout as PrismaWorkout,
+  WorkoutItem as PrismaWorkoutItem,
+  Exercise as PrismaExercise,
+} from "@/lib/generated/prisma/client";
 
-export interface WorkoutItem {
-  id: string;
-  sets: string | null;
-  reps: string | null;
-  order: number;
+/**
+ * Types para o frontend - extende os types do Prisma com as relações necessárias
+ */
+
+// Reutilizando o type Exercise do Prisma diretamente
+export type Exercise = PrismaExercise;
+
+// WorkoutItem com a relação exercise incluída
+export type WorkoutItem = PrismaWorkoutItem & {
   exercise: Exercise;
-}
+};
 
-export interface Workout {
-  id: string;
-  title: string;
+// Workout com items e suas relações, e createdAt como string para serialização JSON
+export type Workout = Omit<PrismaWorkout, "createdAt" | "items"> & {
   createdAt: string;
   items: WorkoutItem[];
-}
+};
 
 export interface WorkoutClientProps {
   slug: string;
