@@ -1,7 +1,4 @@
-interface WorkoutHeaderProps {
-  title: string;
-  itemCount: number;
-}
+import { WorkoutHeaderProps } from "./types";
 
 export const WorkoutHeader = ({ title, itemCount }: WorkoutHeaderProps) => {
   return (

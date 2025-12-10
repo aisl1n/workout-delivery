@@ -1,10 +1,6 @@
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { CheckCircle2 } from "lucide-react";
-
-interface WorkoutFloatingStatusProps {
-  completedCount: number;
-  totalCount: number;
-}
+import { WorkoutFloatingStatusProps } from "./types";
 
 export const WorkoutFloatingStatus = ({
   completedCount,

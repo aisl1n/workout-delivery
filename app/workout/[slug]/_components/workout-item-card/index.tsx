@@ -12,16 +12,7 @@ import {
   Loader2,
   Repeat,
 } from "lucide-react";
-import { WorkoutItem } from "../types";
-
-interface WorkoutItemCardProps {
-  item: WorkoutItem;
-  index: number;
-  isCompleted: boolean;
-  isExpanded: boolean;
-  onToggleComplete: () => void;
-  onToggleExpanded: () => void;
-}
+import { WorkoutItemCardProps } from "./types";
 
 export const WorkoutItemCard = ({
   item,

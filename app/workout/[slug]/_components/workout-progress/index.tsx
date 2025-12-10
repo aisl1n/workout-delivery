@@ -1,7 +1,4 @@
-interface WorkoutProgressProps {
-  completedCount: number;
-  totalCount: number;
-}
+import { WorkoutProgressProps } from "./types";
 
 export const WorkoutProgress = ({
   completedCount,
