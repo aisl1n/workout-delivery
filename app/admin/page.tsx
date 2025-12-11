@@ -7,11 +7,21 @@ import { CreateWorkoutButton } from "./_components/create-workout-button";
 
 const AdminDashboard = async () => {
   // TODO: Adicionar autenticação e pegar o personalId do usuário logado
-  const personalId = "temp-personal-id";
+  // Por enquanto, busca ou cria um personal padrão
+  let personal = await prisma.personal.findFirst();
+
+  if (!personal) {
+    personal = await prisma.personal.create({
+      data: {
+        email: "personal@exemplo.com",
+        name: "Personal Trainer",
+      },
+    });
+  }
 
   const workouts = await prisma.workout.findMany({
     where: {
-      personalId,
+      personalId: personal.id,
     },
     orderBy: {
       createdAt: "desc",

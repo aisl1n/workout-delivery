@@ -23,5 +23,5 @@ export type Workout = Omit<PrismaWorkout, "createdAt" | "items"> & {
 };
 
 export interface WorkoutClientProps {
-  slug: string;
+  workout: Workout;
 }

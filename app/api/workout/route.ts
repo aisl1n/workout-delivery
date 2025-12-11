@@ -2,52 +2,57 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { nanoid } from "nanoid";
 
+/**
+ * POST /api/workout
+ * Cria um novo treino e retorna o slug gerado
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, items } = body;
+    const { title, items } = body as {
+      title: string;
+      items: Array<{
+        exerciseId: string;
+        sets: string;
+        reps: string;
+      }>;
+    };
 
-    // TODO: Pegar o personalId do usuário autenticado
-    const personalId = "temp-personal-id";
-
-    // Criar ou buscar o Personal (temporário até ter autenticação)
-    let personal = await prisma.personal.findUnique({
-      where: { id: personalId },
-    });
-
-    if (!personal) {
-      personal = await prisma.personal.create({
-        data: {
-          id: personalId,
-          email: "temp@example.com",
-          name: "Personal Temporário",
-        },
-      });
+    // Validação básica
+    if (!title || !items || items.length === 0) {
+      return NextResponse.json(
+        { error: "Título e itens são obrigatórios" },
+        { status: 400 },
+      );
     }
 
-    // Gerar slug único
+    // Gera slug único
     const slug = nanoid(10);
 
-    // Criar o treino com os itens
+    // TODO: Adicionar personalId quando tiver autenticação
+    // Por enquanto, busca o primeiro personal do banco
+    const personal = await prisma.personal.findFirst();
+
+    if (!personal) {
+      return NextResponse.json(
+        { error: "Nenhum personal encontrado. Execute o seed primeiro." },
+        { status: 400 },
+      );
+    }
+
+    // Cria o treino com seus itens
     const workout = await prisma.workout.create({
       data: {
         title,
         slug,
         personalId: personal.id,
         items: {
-          create: items.map(
-            (item: {
-              exerciseId: string;
-              sets: string;
-              reps: string;
-              order: number;
-            }) => ({
-              exerciseId: item.exerciseId,
-              sets: item.sets,
-              reps: item.reps,
-              order: item.order,
-            }),
-          ),
+          create: items.map((item, index: number) => ({
+            exerciseId: item.exerciseId,
+            sets: item.sets,
+            reps: item.reps,
+            order: index,
+          })),
         },
       },
       include: {
@@ -63,7 +68,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error creating workout:", error);
     return NextResponse.json(
-      { error: "Failed to create workout" },
+      { error: "Erro ao criar treino" },
       { status: 500 },
     );
   }
