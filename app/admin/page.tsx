@@ -5,6 +5,12 @@ import { StatsCard } from "./_components/stats-card";
 import { EmptyWorkoutState } from "./_components/empty-workout-state";
 import { CreateWorkoutButton } from "./_components/create-workout-button";
 
+// Força revalidação a cada requisição (dynamic rendering)
+export const dynamic = "force-dynamic";
+
+// Alternativa: revalidate a cada X segundos
+// export const revalidate = 0; // ou 10, 30, 60...
+
 const AdminDashboard = async () => {
   // TODO: Adicionar autenticação e pegar o personalId do usuário logado
   // Por enquanto, busca ou cria um personal padrão

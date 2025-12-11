@@ -135,7 +135,7 @@ const NewWorkoutPage = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-zinc-50 to-zinc-100 px-4 font-sans dark:from-zinc-950 dark:to-black">
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-4xl py-8">
         {/* Header */}
         <div className="mb-8">
           <Button variant="ghost" onClick={() => router.push("/admin")}>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { nanoid } from "nanoid";
 
@@ -63,6 +64,9 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    // Revalida o cache da página admin para mostrar o novo treino
+    revalidatePath("/admin");
 
     return NextResponse.json(workout);
   } catch (error) {

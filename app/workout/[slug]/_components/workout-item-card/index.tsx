@@ -75,14 +75,14 @@ export const WorkoutItemCard = ({
                   {item.exercise.muscleGroup}
                 </p>
                 {(item.sets || item.reps) && (
-                  <div className="mt-2 flex gap-3 text-sm">
+                  <div className="mt-2 flex gap-2 text-sm">
                     {item.sets && (
-                      <span className="bg-primary/15 text-primary flex items-center gap-1 rounded-full px-3 py-1 font-medium">
+                      <span className="bg-primary/15 text-primary flex h-10 w-full items-center justify-center gap-1 rounded-full font-medium">
                         <BicepsFlexed className="size-4" /> {item.sets} séries
                       </span>
                     )}
                     {item.reps && (
-                      <span className="bg-primary/15 text-primary flex items-center gap-1 rounded-full px-3 py-1 font-medium">
+                      <span className="bg-primary/15 text-primary flex h-10 w-full items-center justify-center gap-1 rounded-full font-medium">
                         <Repeat className="size-4" /> {item.reps} rép
                       </span>
                     )}
