@@ -3,14 +3,14 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Dumbbell, Loader2 } from "lucide-react";
-import { Workout, WorkoutClientProps } from "./types";
 import {
   WorkoutCompletion,
   WorkoutFloatingStatus,
   WorkoutHeader,
   WorkoutItemCard,
   WorkoutProgress,
-} from "./_components";
+} from "../index";
+import { Workout, WorkoutClientProps } from "../../types";
 
 const WorkoutClient = ({ slug }: WorkoutClientProps) => {
   const [workout, setWorkout] = useState<Workout | null>(null);

@@ -1,4 +1,4 @@
-import WorkoutClient from "./workout-client";
+import WorkoutClient from "./_components/workout-client";
 
 const WorkoutPage = async ({
   params,
